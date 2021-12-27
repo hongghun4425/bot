@@ -1,0 +1,3 @@
+[DEBUG|subindex.py:10] 2020-12-26 13:33:48,777 > subindex시작!!!!
+[DEBUG|subindex.py:31] 2020-12-26 13:33:48,798 > subindex 함수로 들어왔다!!
+[DEBUG|subindex.py:116] 2020-12-26 13:45:30,625 > 모든 subindex 수집끝!!!!

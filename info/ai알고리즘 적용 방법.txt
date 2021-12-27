@@ -1,0 +1,50 @@
+* 수정 해야 할 부분
+    [simulator_func_mysql.py]
+        **코드 상단에 # version 1.3.1 보다 낮은 버전 이거나, 명시 되어 있지 않는 경우
+             -  variable_setting 함수
+                self.buy_stop = False 부분 바로 아래에 아래 변수 두개 추가
+                ````````````````````````````````````````````````````````````
+                self.use_ai = False # ai 알고리즘 사용 시 True 사용 안하면 False
+                self.ai_filter_num = 1 # ai 알고리즘 선택
+                ````````````````````````````````````````````````````````````
+
+             -  db_to_realtime_daily_buy_list 함수
+                self.get_realtime_daily_buy_list() 부분 바로 위에 아래 if 문 추가
+                ````````````````````````````````````````````````````````````````````````````````````````````````
+                if self.use_ai:
+                    from ai_filter import ai_filter
+                    ai_filter(self.ai_filter_num, engine=self.engine_simulator, until=date_rows_yesterday)
+                ````````````````````````````````````````````````````````````````````````````````````````````````
+
+    [library/collector_api.py]
+        ** 코드 상단에 #version 1.3.9 보다 낮은 버전 이거나, 명시 되어 있지 않는 경우
+             '종목리스트 저장하기 챕터' 첨부파일의 library 폴더에서 collector_api.py 만 가져와서 덮어쓰기
+
+            - kind 주석해제
+                > from kind_crawling import *
+                > self.kind = KINDCrawler()
+                > self.kind.craw()
+
+        ** version 1.3.9 상위 버전 포함 모두 적용
+            -if self.open_api.sf.use_ai: 구문 주석 해제
+
+    [library/cf.py]
+        cf.py 파일의 가장 하단에 아래 내용이 없으면 넣어주기
+        # etf 사용 여부 (고급클래스에서 소개)
+        ````````````````
+        use_etf = False
+        ````````````````
+
+
+* 사용방법
+예를 들어 1000번 알고리즘(self.simul_num)에서 AI를 사용하고 싶은 경우
+- simulator_func_mysql.py에서 variable_setting 함수에 1000번 알고리즘에 self.use_ai 옵션을 True로 설정, self.ai_filter_num 설정
+- 그러면 1000번 알고리즘을 시뮬레이션 할 때 AI를 활용해서 매수 종목(realtime_daily_buy_list)을 필터링.
+- 봇 의 경우 콜렉터에서 내일 매수할 리스트를 jackbot DB의 realtime_daily_buy_list 테이블에 저장하는데
+  콜렉터는 32비트에서만 동작하기 때문에 모든 콜렉팅 작업이 끝났을 때 collector_v3.py를 자동으로 종료하고
+  배치파일(ai_filter.bat)을 통해서 64비트 환경에서 ai_filter.py를 자동 실행 -> realtime_daily_buy_list에서
+  시뮬레이터와 동일하게 매수종목을 필터링
+
+* 유의 사항
+  ai를 적용하게 되면 시뮬레이션 시 시간이 많이 걸립니다. 시뮬레이션의 db_to_realtime_daily_buy_list(매수함수)에서
+  쿼리를 짤 때 limit 을 이용 하면 보다 빠르게 돌리실 수 있습니다.

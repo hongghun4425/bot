@@ -1,0 +1,24 @@
+* bot database 종류
+	   1. daily_craw : 종목 별 일 별 금융 거래 데이터를 저장하는 데이터 베이스
+	   2. min_craw : 종목 별 분 별 금융 거래 데이터를 저장하는 데이터 베이스
+	   3. daily_buy_list :
+            1) 일자 별로 상장 된 모든 종목들의 금융 데이터를 저장
+            2) 주식 종목 리스트 저장
+            3) 테이블 종류
+                stock_item_all : 코스피, 코스닥, 코넥스 모든 종목 저장하는 테이블
+                stock_kospi : 코스피 종목 리스트
+                stock_kosdaq : 코스닥 종목 리스트
+
+        4. jackbot1_imi1 : 모의 투자 테이터베이스
+            1) 테이블 종류
+                all_item_db : 종목 거래 이력
+                jango_data : 일별 수익률 정산 테이블
+                possessed_item : 현재 보유 중인 종목 리스트 테이블
+                setting_data : 봇 옵션 관리 및 DB 업데이트 일자 관리 테이블
+
+
+* 초기 database 생성 쿼리문 (collector_v3.py를 실행시키면 자동으로 아래 db가 없을 시 생성 되도록 코드가 수정 되었습니다.)
+    create database daily_craw ;
+    create database min_craw ;
+    create database daily_buy_list ;
+
